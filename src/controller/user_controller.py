@@ -1,6 +1,5 @@
 from src.ports.save_user_intput_port import SaveUserInputPort
-from src.entities.user import User
-from src.entities.user_dto import UserDTO  # استيراد UserDTO
+from src.entities.user_dto import UserDTO
 from src.viewmodels.user_view_model import UserViewModel
 from src.views.user_view import UserView
 
@@ -12,7 +11,7 @@ class UserController:
         # تحويل User إلى UserDTO
         user_dto = UserDTO(first_name, last_name)
 
-        # تمرير DTO إلى Input Port لتنفيذ Use Case
+        # تمرير UserDTO إلى Input Port لتنفيذ Use Case
         user_view_model = self.input_port.execute(user_dto)
 
         # إنشاء View وتمرير ViewModel

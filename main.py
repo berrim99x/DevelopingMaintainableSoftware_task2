@@ -26,5 +26,5 @@ presenter = ConsolePresenter()
 saving_use_case = SavingUseCase(user_repository=mysql_user_repository, presenter=presenter)
 
 # تنفيذ SaveUserUseCase
-user = User(first_name="Islam", last_name="Hala")
+user = User(first_name="Abdelhakim", last_name="Berrim")
 saving_use_case.execute(user)

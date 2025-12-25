@@ -6,7 +6,7 @@ class UserViewModel:
         self.error_message = error_message
 
     def to_dict(self):
-        """ Convert ViewModel to a dictionary for UI interaction """
+        """ تحويل ViewModel إلى قاموس لتسهيل التفاعل مع الـ UI """
         return {
             "first_name": self.first_name,
             "last_name": self.last_name,
