@@ -13,4 +13,4 @@ class SavingUseCase:
         self.user_repository.save(user)
 
     def _is_valid(self, user: User) -> bool:
-        return bool(user.first_name)
+        return bool(user.first_name) and bool(user.last_name)
