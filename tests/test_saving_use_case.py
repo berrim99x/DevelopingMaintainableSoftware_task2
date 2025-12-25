@@ -70,3 +70,15 @@ def test_should_not_save_user_when_last_name_is_empty(user):
 
     # Assert
     spy_user_repository.save.assert_not_called()
+
+def test_should_not_save_user_when_names_contain_only_spaces():
+    # Arrange
+    user = User("   ", "   ")
+    spy_user_repository = Mock(spec=UserRepositoryInterface)
+    saving_use_case = SavingUseCase(user_repository=spy_user_repository)
+
+    # Act
+    saving_use_case.execute(user)
+
+    # Assert
+    spy_user_repository.save.assert_not_called()
