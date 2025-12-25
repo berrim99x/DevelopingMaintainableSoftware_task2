@@ -7,4 +7,7 @@ class SavingUseCase:
         self.user_repository = user_repository
 
     def execute(self, user: User) -> None:
+        if not user.first_name:
+            return
+
         self.user_repository.save(user)
