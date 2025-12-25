@@ -9,7 +9,6 @@ class SavingUseCase:
         self.presenter = presenter
 
     def execute(self, user_dto: UserDTO) -> UserViewModel:
-        # Validate user
         if not self._is_valid(user_dto):
             # بناء ViewModel مع رسالة الخطأ
             return UserViewModel(user_dto.first_name, user_dto.last_name, success=False, error_message="Invalid user data")
@@ -18,7 +17,7 @@ class SavingUseCase:
         self.user_repository.save(user_dto)
 
         # Notify success
-        self.presenter.present_success()  # تأكد من استدعاء هذا عند النجاح
+        self.presenter.present_success()
 
         # بناء ViewModel مع النجاح
         return UserViewModel(user_dto.first_name, user_dto.last_name, success=True)

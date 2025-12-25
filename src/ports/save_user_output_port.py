@@ -1,10 +1,6 @@
-from abc import ABC, abstractmethod
-
-class SaveUserOutputPort(ABC):
-    @abstractmethod
+class SaveUserOutputPort:
     def present_success(self):
-        pass
+        raise NotImplementedError
 
-    @abstractmethod
     def present_error(self, message: str):
-        pass
+        raise NotImplementedError
