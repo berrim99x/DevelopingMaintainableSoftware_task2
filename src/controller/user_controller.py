@@ -1,6 +1,7 @@
-from src.entities.user import User
 from src.ports.save_user_intput_port import SaveUserInputPort
-
+from src.entities.user import User
+from src.viewmodels.user_view_model import UserViewModel
+from src.views.user_view import UserView
 
 class UserController:
     def __init__(self, input_port: SaveUserInputPort):
@@ -11,4 +12,8 @@ class UserController:
         user = User(first_name, last_name)
 
         # تمرير المستخدم إلى Input Port لتنفيذ Use Case
-        self.input_port.execute(user)
+        user_view_model = self.input_port.execute(user)
+
+        # إنشاء View وتمرير ViewModel
+        view = UserView(user_view_model)
+        view.display_user()  # عرض النتيجة في الـ UI

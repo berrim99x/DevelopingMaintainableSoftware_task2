@@ -1,24 +1,24 @@
 from src.interface_adapters.gateways.user_repository_interface import UserRepositoryInterface
 from src.ports.save_user_output_port import SaveUserOutputPort
 from src.entities.user import User
-
+from src.viewmodels.user_view_model import UserViewModel
 
 class SavingUseCase:
     def __init__(self, user_repository: UserRepositoryInterface, presenter: SaveUserOutputPort):
         self.user_repository = user_repository
         self.presenter = presenter
 
-    def execute(self, user: User) -> None:
+    def execute(self, user: User) -> UserViewModel:
         # Validate user
         if not self._is_valid(user):
-            self.presenter.present_error("Invalid user data")
-            return
+            # بناء ViewModel مع رسالة الخطأ
+            return UserViewModel(user.first_name, user.last_name, success=False, error_message="Invalid user data")
 
         # Save user to repository
         self.user_repository.save(user)
 
-        # Notify success
-        self.presenter.present_success()
+        # بناء ViewModel مع النجاح
+        return UserViewModel(user.first_name, user.last_name, success=True)
 
     def _is_valid(self, user: User) -> bool:
         return self._has_valid_length(user.first_name) and self._has_valid_length(user.last_name) and \
