@@ -1,6 +1,6 @@
-from src.entities.user import User
 from src.interface_adapters.gateways.user_repository_interface import UserRepositoryInterface
 from src.ports.save_user_output_port import SaveUserOutputPort
+from src.entities.user import User
 
 
 class SavingUseCase:
@@ -9,17 +9,20 @@ class SavingUseCase:
         self.presenter = presenter
 
     def execute(self, user: User) -> None:
-
+        # Validate user
         if not self._is_valid(user):
             self.presenter.present_error("Invalid user data")
             return
 
+        # Save user to repository
         self.user_repository.save(user)
+
+        # Notify success
         self.presenter.present_success()
 
     def _is_valid(self, user: User) -> bool:
         return self._has_valid_length(user.first_name) and self._has_valid_length(user.last_name) and \
-               self._has_valid_characters(user.first_name) and self._has_valid_characters(user.last_name)
+            self._has_valid_characters(user.first_name) and self._has_valid_characters(user.last_name)
 
     def _has_valid_length(self, value: str) -> bool:
         return len(value.strip()) >= 2
