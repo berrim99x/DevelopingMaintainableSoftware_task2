@@ -1,32 +1,22 @@
 from unittest.mock import Mock
-from dataclasses import dataclass
-from abc import ABCMeta, abstractmethod
 
+import pytest
 
+from src.saving_use_case import SavingUseCase
+from src.user import User
+from src.user_repository_interface import UserRepositoryInterface
 
-@dataclass
-class User:
-    first_name: str
-    last_name: str
-
-
-
-class UserRepositoryInterface(metaclass=ABCMeta):
-    @abstractmethod
-    def save(self, user: User) -> None:
-        pass
-
-
-
-class SavingUseCase:
-    def __init__(self, user_repository: UserRepositoryInterface):
-        self.user_repository = user_repository
-
-    def execute(self, user: User) -> None:
-        self.user_repository.save(user)
-
-
-def test_saving_user_is_calling_delegated_repository():
+@pytest.mark.parametrize(
+    "user",
+    [
+        User("Islam", "Hala"),
+        User("Abdelhakim", "Berrim"),
+        User("Dhia", "Okba"),
+        User("Adam", "Hibi"),
+        User("Oussama", "Khelef"),
+        User("Ahmed", "Zellouma"),
+    ])
+def test_saving_user_is_calling_delegated_repository(user):
     # Arrange
     user = User(first_name="Islam", last_name="Hala")
     spy_user_repository = Mock(spec=UserRepositoryInterface)
