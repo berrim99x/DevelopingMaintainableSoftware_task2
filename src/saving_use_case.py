@@ -7,7 +7,10 @@ class SavingUseCase:
         self.user_repository = user_repository
 
     def execute(self, user: User) -> None:
-        if not user.first_name:
+        if not self._is_valid(user):
             return
 
         self.user_repository.save(user)
+
+    def _is_valid(self, user: User) -> bool:
+        return bool(user.first_name)

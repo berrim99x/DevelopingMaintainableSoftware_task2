@@ -18,7 +18,6 @@ from src.user_repository_interface import UserRepositoryInterface
     ])
 def test_saving_user_is_calling_delegated_repository(user):
     # Arrange
-    user = User(first_name="Islam", last_name="Hala")
     spy_user_repository = Mock(spec=UserRepositoryInterface)
     saving_use_case = SavingUseCase(user_repository=spy_user_repository)
 
@@ -28,10 +27,18 @@ def test_saving_user_is_calling_delegated_repository(user):
     # Assert
     spy_user_repository.save.assert_called_once_with(user)
 
-
-def test_should_not_save_user_when_first_name_is_empty():
+@pytest.mark.parametrize(
+    "user",
+    [
+        User("", "Hala"),
+        User("", "Berrim"),
+        User("", "Okba"),
+        User("", "Hibi"),
+        User("", "Khelef"),
+        User("", "Zellouma"),
+    ])
+def test_should_not_save_user_when_first_name_is_empty(user):
     # Arrange
-    user = User(first_name="", last_name="Hala")
     spy_user_repository = Mock(spec=UserRepositoryInterface)
     saving_use_case = SavingUseCase(user_repository=spy_user_repository)
 
