@@ -47,3 +47,15 @@ def test_should_not_save_user_when_first_name_is_empty(user):
 
     # Assert
     spy_user_repository.save.assert_not_called()
+
+def test_should_not_save_user_when_last_name_is_empty():
+    # Arrange
+    user = User(first_name="Islam", last_name="")
+    spy_user_repository = Mock(spec=UserRepositoryInterface)
+    saving_use_case = SavingUseCase(user_repository=spy_user_repository)
+
+    # Act
+    saving_use_case.execute(user)
+
+    # Assert
+    spy_user_repository.save.assert_not_called()
