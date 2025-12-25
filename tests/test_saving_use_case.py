@@ -81,7 +81,24 @@ def test_should_not_save_user_when_last_name_is_empty(user):
 )
 
 def test_should_not_save_user_when_names_contain_only_spaces(user):
-    user = User("   ", "   ")
+    spy_user_repository = Mock(spec=UserRepositoryInterface)
+    saving_use_case = SavingUseCase(user_repository=spy_user_repository)
+
+    # Act
+    saving_use_case.execute(user)
+
+    # Assert
+    spy_user_repository.save.assert_not_called()
+@pytest.mark.parametrize(
+    "user",
+    [
+        User("I", "Hal"),
+        User("A", "Berrim"),
+        User("D", "Okba"),
+
+    ])
+def test_should_not_save_user_when_first_name_is_too_short(user):
+    # Arrange
     spy_user_repository = Mock(spec=UserRepositoryInterface)
     saving_use_case = SavingUseCase(user_repository=spy_user_repository)
 
@@ -91,9 +108,16 @@ def test_should_not_save_user_when_names_contain_only_spaces(user):
     # Assert
     spy_user_repository.save.assert_not_called()
 
-def test_should_not_save_user_when_first_name_is_too_short():
+@pytest.mark.parametrize(
+    "user",
+    [
+        User("Islam", "H"),
+        User("Abdelhakim", "B"),
+        User("Dhia", "O"),
+
+    ])
+def test_should_not_save_user_when_last_name_is_too_short(user):
     # Arrange
-    user = User("A", "Hala")
     spy_user_repository = Mock(spec=UserRepositoryInterface)
     saving_use_case = SavingUseCase(user_repository=spy_user_repository)
 
@@ -102,10 +126,16 @@ def test_should_not_save_user_when_first_name_is_too_short():
 
     # Assert
     spy_user_repository.save.assert_not_called()
+@pytest.mark.parametrize(
+    "user",
+    [
+        User("I4556@slam", "Hala"),
+        User("Abdel--(hakim", "Berrim"),
+        User("Dhi0.a", "Okba"),
 
-def test_should_not_save_user_when_last_name_is_too_short():
+    ])
+def test_should_not_save_user_when_first_name_contains_symbols(user):
     # Arrange
-    user = User("Islam", "H")  # الاسم الأخير < 2
     spy_user_repository = Mock(spec=UserRepositoryInterface)
     saving_use_case = SavingUseCase(user_repository=spy_user_repository)
 
@@ -114,22 +144,16 @@ def test_should_not_save_user_when_last_name_is_too_short():
 
     # Assert
     spy_user_repository.save.assert_not_called()
+@pytest.mark.parametrize(
+    "user",
+    [
+        User("Islam", "H1313"),
+        User("Abdelhakim", "-_è"),
+        User("Dhia", "Oé&'"),
 
-def test_should_not_save_user_when_first_name_contains_symbols():
+    ])
+def test_should_not_save_user_when_last_name_contains_numbers(user):
     # Arrange
-    user = User("Isl@m", "Hala")  # يحتوي على رمز
-    spy_user_repository = Mock(spec=UserRepositoryInterface)
-    saving_use_case = SavingUseCase(user_repository=spy_user_repository)
-
-    # Act
-    saving_use_case.execute(user)
-
-    # Assert
-    spy_user_repository.save.assert_not_called()
-
-def test_should_not_save_user_when_last_name_contains_numbers():
-    # Arrange
-    user = User("Islam", "H4la")  # يحتوي على رقم
     spy_user_repository = Mock(spec=UserRepositoryInterface)
     saving_use_case = SavingUseCase(user_repository=spy_user_repository)
 
