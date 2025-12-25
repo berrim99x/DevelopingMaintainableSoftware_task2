@@ -2,9 +2,9 @@ from unittest.mock import Mock
 
 import pytest
 
-from src.saving_use_case import SavingUseCase
-from src.user import User
-from src.user_repository_interface import UserRepositoryInterface
+from src.use_cases.saving_user.saving_use_case import SavingUseCase
+from src.entities.user import User
+from src.interface_adapters.gateways.user_repository_interface import UserRepositoryInterface
 
 @pytest.mark.parametrize(
     "user",
@@ -70,9 +70,17 @@ def test_should_not_save_user_when_last_name_is_empty(user):
 
     # Assert
     spy_user_repository.save.assert_not_called()
+@pytest.mark.parametrize(
+    "user",
+    [
+        User(" ", " "),
+        User("", ""),
+        User("", "   "),
+        User("   ", ""),
+    ]
+)
 
-def test_should_not_save_user_when_names_contain_only_spaces():
-    # Arrange
+def test_should_not_save_user_when_names_contain_only_spaces(user):
     user = User("   ", "   ")
     spy_user_repository = Mock(spec=UserRepositoryInterface)
     saving_use_case = SavingUseCase(user_repository=spy_user_repository)

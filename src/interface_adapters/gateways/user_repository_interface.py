@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-from src.user import User
+from src.entities.user import User
 
 
 class UserRepositoryInterface(metaclass=ABCMeta):

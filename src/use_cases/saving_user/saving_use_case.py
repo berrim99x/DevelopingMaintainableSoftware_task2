@@ -1,5 +1,5 @@
-from src.user import User
-from src.user_repository_interface import UserRepositoryInterface
+from src.entities.user import User
+from src.interface_adapters.gateways.user_repository_interface import UserRepositoryInterface
 
 
 class SavingUseCase:
@@ -14,13 +14,10 @@ class SavingUseCase:
 
     def _is_valid(self, user: User) -> bool:
         validators = [
-            self._has_first_name,
-            self._has_last_name,
+            lambda u: self._has_text(u.first_name),
+            lambda u: self._has_text(u.last_name),
         ]
         return all(validator(user) for validator in validators)
 
-    def _has_first_name(self, user: User) -> bool:
-        return bool(user.first_name.strip())
-
-    def _has_last_name(self, user: User) -> bool:
-        return bool(user.last_name.strip())
+    def _has_text(self, value: str) -> bool:
+        return bool(value and value.strip())
