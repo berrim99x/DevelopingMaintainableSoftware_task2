@@ -20,7 +20,7 @@ class SavingUseCase:
         return all(validator(user) for validator in validators)
 
     def _has_first_name(self, user: User) -> bool:
-        return bool(user.first_name)
+        return bool(user.first_name.strip())
 
     def _has_last_name(self, user: User) -> bool:
-        return bool(user.last_name)
+        return bool(user.last_name.strip())
