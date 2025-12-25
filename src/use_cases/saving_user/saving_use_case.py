@@ -13,11 +13,14 @@ class SavingUseCase:
         self.user_repository.save(user)
 
     def _is_valid(self, user: User) -> bool:
-        validators = [
-            lambda u: self._has_text(u.first_name),
-            lambda u: self._has_text(u.last_name),
-        ]
-        return all(validator(user) for validator in validators)
+        return self._has_valid_length(user.first_name) and \
+               self._has_valid_length(user.last_name) and \
+               self._has_valid_characters(user.first_name) and \
+               self._has_valid_characters(user.last_name)
 
-    def _has_text(self, value: str) -> bool:
-        return bool(value and value.strip())
+    def _has_valid_length(self, value: str) -> bool:
+        return len(value.strip()) >= 2
+
+    def _has_valid_characters(self, value: str) -> bool:
+        return value.isalpha() and bool(value.strip())
+
