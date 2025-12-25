@@ -13,4 +13,14 @@ class SavingUseCase:
         self.user_repository.save(user)
 
     def _is_valid(self, user: User) -> bool:
-        return bool(user.first_name) and bool(user.last_name)
+        validators = [
+            self._has_first_name,
+            self._has_last_name,
+        ]
+        return all(validator(user) for validator in validators)
+
+    def _has_first_name(self, user: User) -> bool:
+        return bool(user.first_name)
+
+    def _has_last_name(self, user: User) -> bool:
+        return bool(user.last_name)
