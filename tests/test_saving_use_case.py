@@ -162,3 +162,4 @@ def test_should_not_save_user_when_last_name_contains_numbers(user):
 
     # Assert
     spy_user_repository.save.assert_not_called()
+
