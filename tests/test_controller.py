@@ -1,6 +1,8 @@
 from unittest.mock import Mock
-from abc import ABC, abstractmethod
+
+from src.controller.user_controller import UserController
 from src.entities.user import User
+from src.ports.save_user_intput_port import SaveUserInputPort
 
 
 def test_controller_calls_input_port():
@@ -13,3 +15,5 @@ def test_controller_calls_input_port():
 
     # Assert
     spy_input_port.execute.assert_called_once_with(User("Islam", "Hala"))
+
+
