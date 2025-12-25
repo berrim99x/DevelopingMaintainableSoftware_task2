@@ -90,3 +90,51 @@ def test_should_not_save_user_when_names_contain_only_spaces(user):
 
     # Assert
     spy_user_repository.save.assert_not_called()
+
+def test_should_not_save_user_when_first_name_is_too_short():
+    # Arrange
+    user = User("A", "Hala")
+    spy_user_repository = Mock(spec=UserRepositoryInterface)
+    saving_use_case = SavingUseCase(user_repository=spy_user_repository)
+
+    # Act
+    saving_use_case.execute(user)
+
+    # Assert
+    spy_user_repository.save.assert_not_called()
+
+def test_should_not_save_user_when_last_name_is_too_short():
+    # Arrange
+    user = User("Islam", "H")  # الاسم الأخير < 2
+    spy_user_repository = Mock(spec=UserRepositoryInterface)
+    saving_use_case = SavingUseCase(user_repository=spy_user_repository)
+
+    # Act
+    saving_use_case.execute(user)
+
+    # Assert
+    spy_user_repository.save.assert_not_called()
+
+def test_should_not_save_user_when_first_name_contains_symbols():
+    # Arrange
+    user = User("Isl@m", "Hala")  # يحتوي على رمز
+    spy_user_repository = Mock(spec=UserRepositoryInterface)
+    saving_use_case = SavingUseCase(user_repository=spy_user_repository)
+
+    # Act
+    saving_use_case.execute(user)
+
+    # Assert
+    spy_user_repository.save.assert_not_called()
+
+def test_should_not_save_user_when_last_name_contains_numbers():
+    # Arrange
+    user = User("Islam", "H4la")  # يحتوي على رقم
+    spy_user_repository = Mock(spec=UserRepositoryInterface)
+    saving_use_case = SavingUseCase(user_repository=spy_user_repository)
+
+    # Act
+    saving_use_case.execute(user)
+
+    # Assert
+    spy_user_repository.save.assert_not_called()
