@@ -1,6 +1,6 @@
 from src.interface_adapters.gateways.user_repository_interface import UserRepositoryInterface
 from src.ports.save_user_output_port import SaveUserOutputPort
-from src.entities.user import User
+from src.entities.user_dto import UserDTO
 from src.viewmodels.user_view_model import UserViewModel
 
 class SavingUseCase:
@@ -8,21 +8,24 @@ class SavingUseCase:
         self.user_repository = user_repository
         self.presenter = presenter
 
-    def execute(self, user: User) -> UserViewModel:
+    def execute(self, user_dto: UserDTO) -> UserViewModel:
         # Validate user
-        if not self._is_valid(user):
+        if not self._is_valid(user_dto):
             # بناء ViewModel مع رسالة الخطأ
-            return UserViewModel(user.first_name, user.last_name, success=False, error_message="Invalid user data")
+            return UserViewModel(user_dto.first_name, user_dto.last_name, success=False, error_message="Invalid user data")
 
         # Save user to repository
-        self.user_repository.save(user)
+        self.user_repository.save(user_dto)
+
+        # Notify success
+        self.presenter.present_success()  # تأكد من استدعاء هذا عند النجاح
 
         # بناء ViewModel مع النجاح
-        return UserViewModel(user.first_name, user.last_name, success=True)
+        return UserViewModel(user_dto.first_name, user_dto.last_name, success=True)
 
-    def _is_valid(self, user: User) -> bool:
-        return self._has_valid_length(user.first_name) and self._has_valid_length(user.last_name) and \
-            self._has_valid_characters(user.first_name) and self._has_valid_characters(user.last_name)
+    def _is_valid(self, user_dto: UserDTO) -> bool:
+        return self._has_valid_length(user_dto.first_name) and self._has_valid_length(user_dto.last_name) and \
+               self._has_valid_characters(user_dto.first_name) and self._has_valid_characters(user_dto.last_name)
 
     def _has_valid_length(self, value: str) -> bool:
         return len(value.strip()) >= 2
